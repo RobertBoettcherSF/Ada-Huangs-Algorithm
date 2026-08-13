@@ -91,62 +91,72 @@ begin
    Put_Line ("TEST 9 - Robustness: Idle Node Send Error");
    Put_Line ("  9.1 Assert Invalid_Operation raised when Idle node sends message");
    declare
-      Exception_Raised : Boolean := False;
    begin
       Send_Message_Static (Sys, 2, W);
+      Assert (False, "No exception for idle send");
    exception
-      when Invalid_Operation => Exception_Raised := True;
+      when Invalid_Operation => 
+         Assert (True, "");
+      when others =>
+         Assert (False, "Wrong exception raised");
    end;
-   Assert (Exception_Raised, "No exception for idle send");
 
    -- TEST 10 - Robustness: Idle Node Finish Error
    Put_Line ("TEST 10 - Robustness: Idle Node Finish Error");
    Put_Line ("  10.1 Assert Invalid_Operation raised when Idle node finishes task");
    declare
-      Exception_Raised : Boolean := False;
    begin
       Finish_Task (Sys, 2, W);
+      Assert (False, "No exception for idle finish");
    exception
-      when Invalid_Operation => Exception_Raised := True;
+      when Invalid_Operation => 
+         Assert (True, "");
+      when others =>
+         Assert (False, "Wrong exception raised");
    end;
-   Assert (Exception_Raised, "No exception for idle finish");
 
    -- TEST 11 - Robustness: Negative Weight Receive Error
    Put_Line ("TEST 11 - Robustness: Negative Weight Receive Error");
    Put_Line ("  11.1 Assert Invalid_Operation raised for receiving negative weight");
    declare
-      Exception_Raised : Boolean := False;
    begin
       Receive_Message (Sys, 2, -0.5);
+      Assert (False, "No exception for negative weight receive");
    exception
-      when Invalid_Operation => Exception_Raised := True;
+      when Invalid_Operation => 
+         Assert (True, "");
+      when others =>
+         Assert (False, "Wrong exception raised");
    end;
-   Assert (Exception_Raised, "No exception for negative weight receive");
 
    -- TEST 12 - Robustness: Dynamic Split Fraction Boundaries
    Put_Line ("TEST 12 - Robustness: Dynamic Split Boundaries");
    Put_Line ("  12.1 Assert Invalid_Operation for fraction >= 1.0");
    Initialize (Sys, 1);
    declare
-      Exception_Raised : Boolean := False;
    begin
       Send_Message_Dynamic (Sys, 1, 1.5, W);
+      Assert (False, "No exception for large fraction");
    exception
-      when Invalid_Operation => Exception_Raised := True;
+      when Invalid_Operation => 
+         Assert (True, "");
+      when others =>
+         Assert (False, "Wrong exception raised");
    end;
-   Assert (Exception_Raised, "No exception for large fraction");
 
    -- TEST 13 - Precision and Underflow Protection
    Put_Line ("TEST 13 - Precision and Underflow Protection");
    Put_Line ("  13.1 Assert underflow exception when sending microscopic fraction");
    declare
-      Exception_Raised : Boolean := False;
    begin
       Send_Message_Dynamic (Sys, 1, 1.0e-12, W);
+      Assert (False, "No exception for precision underflow");
    exception
-      when Invalid_Operation => Exception_Raised := True;
+      when Invalid_Operation => 
+         Assert (True, "");
+      when others =>
+         Assert (False, "Wrong exception raised");
    end;
-   Assert (Exception_Raised, "No exception for precision underflow");
 
    Put_Line ("-------------------------------------------------------------");
    Put_Line ("Test Summary: " & Integer'Image(Passed_Tests) & " / " & Integer'Image(Total_Tests) & " Assertions Passed.");
